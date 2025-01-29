@@ -8,7 +8,6 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 jobs:
   build:
     runs-on: [self-hosted, windows, x64]
@@ -18,7 +17,7 @@ jobs:
       - name: Set execution policy
         shell: powershell
         run: |
-          Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+          Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
