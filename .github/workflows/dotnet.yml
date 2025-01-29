@@ -15,8 +15,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set execution policy
-        run: Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+      - name: Set execution policy globally
+        run: |
+            Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+             # or
+            #Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
