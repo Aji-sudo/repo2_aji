@@ -8,19 +8,29 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: [self-hosted, windows, x64]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set execution policy
-        shell: powershell
+
+      # Set execution policy for the current process to allow scripts to run
+      - name: Set execution policy for the current process
         run: |
-          Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
+          Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+
+      # Unblock scripts that might be downloaded from the internet
+      - name: Unblock downloaded scripts
+        run: |
+          Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -Filter *.ps1 | Unblock-File
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build --no-restore
+
       - name: Test
         run: dotnet test --no-build --verbosity normal
