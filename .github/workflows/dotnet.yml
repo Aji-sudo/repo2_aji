@@ -8,15 +8,17 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
 jobs:
   build:
     runs-on: [self-hosted, windows, x64]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set execution policy (pwsh)
-        shell: pwsh
-        run: Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+      - name: Set execution policy
+        shell: powershell
+        run: |
+          Set-ExecutionPolicy RemoteSigned -Scope Process -Force
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
